@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Local Chess Arena</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/board.css">
+<link rel="stylesheet" href="css/themes.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%99%9A%3C/text%3E%3C/svg%3E">
+</head>
+<body data-theme="classic">
+<a class="skip" href="#main">Skip to content</a>
+<main id="main">
+
+<!-- MAIN MENU -->
+<section id="screen-menu" class="screen" aria-labelledby="menu-title">
+  <div class="menu-card">
+    <h1 id="menu-title" class="title">LOCAL CHESS ARENA</h1>
+    <p class="glyphs" aria-hidden="true">&#9823;&#xFE0E; CHESS &#9818;&#xFE0E;</p>
+    <nav aria-label="Main menu" id="menu-list">
+      <button class="menu-btn" data-go="setup-pvc">PLAY VS COMPUTER</button>
+      <button class="menu-btn" data-go="setup-pvp">LOCAL 2 PLAYER</button>
+      <button class="menu-btn" data-go="puzzle">PUZZLE MODE</button>
+      <button class="menu-btn" data-go="practice">PRACTICE BOARD</button>
+      <button class="menu-btn" data-go="saved">SAVED GAMES</button>
+      <button class="menu-btn" data-go="history">GAME HISTORY</button>
+      <button class="menu-btn" data-go="settings">SETTINGS</button>
+    </nav>
+    <p class="hint">Arrow Up / Down to move, Enter to choose, Esc to go back.</p>
+  </div>
+</section>
+
+<!-- SETUP -->
+<section id="screen-setup" class="screen" hidden aria-labelledby="setup-title">
+  <div class="card narrow">
+    <h2 id="setup-title">New game</h2>
+    <div class="only-pvc field"><label for="su-name">Your name</label><input id="su-name" maxlength="32" autocomplete="off"></div>
+    <div class="only-pvp field"><label for="su-wname">White player</label><input id="su-wname" maxlength="32" value="White" autocomplete="off"></div>
+    <div class="only-pvp field"><label for="su-bname">Black player</label><input id="su-bname" maxlength="32" value="Black" autocomplete="off"></div>
+    <fieldset class="only-pvc seg"><legend>Play as</legend>
+      <label><input type="radio" name="color" value="w" checked><span>White</span></label>
+      <label><input type="radio" name="color" value="b"><span>Black</span></label>
+      <label><input type="radio" name="color" value="random"><span>Random</span></label>
+    </fieldset>
+    <fieldset class="only-pvc seg"><legend>Difficulty</legend>
+      <label><input type="radio" name="level" value="easy"><span>Easy</span></label>
+      <label><input type="radio" name="level" value="medium" checked><span>Medium</span></label>
+      <label><input type="radio" name="level" value="hard"><span>Hard</span></label>
+      <label><input type="radio" name="level" value="expert"><span>Expert</span></label>
+    </fieldset>
+    <div class="field"><label for="su-clock">Clock</label>
+      <select id="su-clock">
+        <option value="none">No clock</option>
+        <option value="1+0">1 + 0</option><option value="1+1">1 + 1</option>
+        <option value="3+0">3 + 0</option><option value="3+2">3 + 2</option>
+        <option value="5+0">5 + 0</option><option value="5+3">5 + 3</option>
+        <option value="10+0" selected>10 + 0</option><option value="10+5">10 + 5</option>
+        <option value="15+10">15 + 10</option><option value="30+0">30 + 0</option>
+        <option value="custom">Custom...</option>
+      </select></div>
+    <div id="su-custom" class="custom-clock" hidden>
+      <div class="field"><label for="su-wt">White time (HH:MM:SS)</label><input id="su-wt" value="00:10:00" inputmode="numeric" maxlength="8"></div>
+      <div class="field"><label for="su-bt">Black time (HH:MM:SS)</label><input id="su-bt" value="00:10:00" inputmode="numeric" maxlength="8"></div>
+      <div class="field"><label for="su-inc">Increment (seconds)</label>
+        <select id="su-inc"><option>0</option><option>1</option><option>2</option><option>3</option><option>5</option><option>10</option><option>30</option></select></div>
+    </div>
+    <p id="su-error" class="error" role="alert"></p>
+    <div class="row"><button class="btn primary" id="su-start">START GAME</button><button class="btn" data-go="menu">BACK</button></div>
+  </div>
+</section>
+
+<!-- GAME -->
+<section id="screen-game" class="screen wide" hidden aria-label="Game">
+  <div class="game-layout">
+    <div class="board-col"><div id="game-board"></div></div>
+    <aside class="panel-col" aria-label="Game information">
+      <button class="btn panel-toggle" id="g-toggle" aria-expanded="true">GAME PANEL</button>
+      <div id="g-panel">
+        <div class="card hud">
+          <div class="player" id="g-prow-w"><span class="pname"><span class="dot w"></span><span id="g-white-name">White</span></span><span class="clock" id="g-white-clock">--:--</span></div>
+          <div class="caps" id="g-cap-w" aria-label="Pieces captured by White"></div>
+          <div class="player" id="g-prow-b"><span class="pname"><span class="dot b"></span><span id="g-black-name">Black</span></span><span class="clock" id="g-black-clock">--:--</span></div>
+          <div class="caps" id="g-cap-b" aria-label="Pieces captured by Black"></div>
+          <div class="turnline"><strong id="g-turn">WHITE TO MOVE</strong><span id="g-movenum">Move 1</span></div>
+          <div id="g-status" class="status" role="status" aria-live="polite"></div>
+          <div id="g-material" class="muted"></div>
+        </div>
+        <div class="card"><h3>Move history</h3><ol id="g-moves" class="moves" tabindex="0" aria-label="Move history"></ol></div>
+        <div class="btn-grid">
+          <button class="btn" id="b-undo">UNDO MOVE</button>
+          <button class="btn" id="b-redo">REDO</button>
+          <button class="btn" id="b-draw">OFFER DRAW</button>
+          <button class="btn danger" id="b-resign">RESIGN</button>
+          <button class="btn" id="b-pause">PAUSE</button>
+          <button class="btn" id="b-flip">FLIP BOARD</button>
+          <button class="btn" id="b-save">SAVE GAME</button>
+          <button class="btn" id="b-new">NEW GAME</button>
+          <button class="btn" id="b-copyfen">COPY FEN</button>
+          <button class="btn" id="b-loadfen">LOAD FEN</button>
+          <button class="btn" id="b-pgn">EXPORT PGN</button>
+          <button class="btn" id="b-analyze">ANALYZE</button>
+          <button class="btn wide-btn" data-go="menu">MAIN MENU</button>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- PUZZLES -->
+<section id="screen-puzzle" class="screen wide" hidden aria-label="Puzzles">
+  <div class="game-layout">
+    <div class="board-col"><div id="p-board"></div></div>
+    <aside class="panel-col">
+      <div class="card">
+        <h2 id="p-title">Puzzle</h2>
+        <p id="p-desc" class="muted"></p>
+        <p id="p-goal"><strong></strong></p>
+        <p id="p-feedback" class="status" role="status" aria-live="polite"></p>
+        <p id="p-progress" class="muted"></p>
+      </div>
+      <div class="card"><label for="p-select">Choose puzzle</label><select id="p-select"></select></div>
+      <div class="btn-grid">
+        <button class="btn" id="p-prev">PREVIOUS PUZZLE</button>
+        <button class="btn" id="p-next">NEXT PUZZLE</button>
+        <button class="btn" id="p-reset">RESET</button>
+        <button class="btn" id="p-hint">HINT</button>
+        <button class="btn wide-btn" data-go="menu">MAIN MENU</button>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- PRACTICE -->
+<section id="screen-practice" class="screen wide" hidden aria-label="Practice board">
+  <div class="game-layout">
+    <div class="board-col"><div id="e-board"></div></div>
+    <aside class="panel-col">
+      <div class="card">
+        <h2>Practice board</h2>
+        <p class="muted">Pick a piece, then click squares to place it. Use Move to drag pieces around, Erase to remove.</p>
+        <div id="e-palette" class="palette" role="toolbar" aria-label="Piece palette"></div>
+        <div class="field"><label for="e-turn">Side to move</label>
+          <select id="e-turn"><option value="w">White</option><option value="b">Black</option></select></div>
+        <fieldset class="checks"><legend>Castling rights</legend>
+          <label><input type="checkbox" id="e-cK" checked>White O-O</label>
+          <label><input type="checkbox" id="e-cQ" checked>White O-O-O</label>
+          <label><input type="checkbox" id="e-ck" checked>Black O-O</label>
+          <label><input type="checkbox" id="e-cq" checked>Black O-O-O</label>
+        </fieldset>
+        <div class="field"><label for="e-fen">FEN</label><input id="e-fen" spellcheck="false" autocomplete="off"></div>
+        <p id="e-msg" class="status" role="status" aria-live="polite"></p>
+      </div>
+      <div class="btn-grid">
+        <button class="btn" id="e-clear">CLEAR BOARD</button>
+        <button class="btn" id="e-reset">RESET</button>
+        <button class="btn" id="e-set">SET POSITION</button>
+        <button class="btn primary" id="e-play">PLAY</button>
+        <button class="btn" id="e-load">LOAD FEN</button>
+        <button class="btn" id="e-flip">FLIP BOARD</button>
+        <button class="btn wide-btn" data-go="menu">MAIN MENU</button>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- ANALYSIS -->
+<section id="screen-analysis" class="screen wide" hidden aria-label="Analysis">
+  <div class="game-layout">
+    <div class="board-col"><div id="a-board"></div></div>
+    <aside class="panel-col">
+      <div class="card">
+        <h2 id="a-title">Analysis</h2>
+        <p id="a-info" class="status" role="status" aria-live="polite"></p>
+        <div class="field"><label for="a-fen">Position FEN</label><input id="a-fen" readonly></div>
+        <div class="nav-row">
+          <button class="btn" id="a-first" aria-label="First position">FIRST</button>
+          <button class="btn" id="a-prev" aria-label="Previous move">PREVIOUS</button>
+          <button class="btn" id="a-next" aria-label="Next move">NEXT</button>
+          <button class="btn" id="a-last" aria-label="Last position">LAST</button>
+        </div>
+      </div>
+      <div class="card"><h3>Moves</h3><ol id="a-moves" class="moves" aria-label="Moves"></ol></div>
+      <div class="btn-grid">
+        <button class="btn" id="a-copy">COPY FEN</button>
+        <button class="btn" id="a-flip">FLIP BOARD</button>
+        <button class="btn" id="a-loadpgn">LOAD PGN</button>
+        <button class="btn" id="a-export">EXPORT PGN</button>
+        <button class="btn wide-btn" data-go="menu">MAIN MENU</button>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- SAVED -->
+<section id="screen-saved" class="screen" hidden aria-labelledby="saved-title">
+  <div class="card list-card"><h2 id="saved-title">Saved games</h2><div id="saved-list"></div>
+    <div class="row"><button class="btn" data-go="menu">BACK</button></div></div>
+</section>
+
+<!-- HISTORY -->
+<section id="screen-history" class="screen" hidden aria-labelledby="hist-title">
+  <div class="card list-card"><h2 id="hist-title">Game history</h2>
+    <div id="stats-box" class="stats"></div><div id="history-list"></div>
+    <div class="row"><button class="btn" data-go="menu">BACK</button></div></div>
+</section>
+
+<!-- SETTINGS -->
+<section id="screen-settings" class="screen" hidden aria-labelledby="set-title">
+  <div class="card narrow"><h2 id="set-title">Settings</h2>
+    <div class="field"><label for="s-theme">Board theme</label>
+      <select id="s-theme"><option value="classic">Classic</option><option value="wood">Wood</option><option value="green">Green</option><option value="blue">Blue</option><option value="dark">Dark</option></select></div>
+    <div id="s-preview" class="theme-preview" aria-hidden="true"></div>
+    <div class="field"><label for="s-name">Default player name</label><input id="s-name" maxlength="32" autocomplete="off"></div>
+    <label class="check"><input type="checkbox" id="s-sound">Sound</label>
+    <label class="check"><input type="checkbox" id="s-hints">Show legal move highlights</label>
+    <label class="check"><input type="checkbox" id="s-autoq">Auto-promote to queen (otherwise ask)</label>
+    <label class="check"><input type="checkbox" id="s-motion">Reduce motion</label>
+    <div class="row"><button class="btn" data-go="menu">BACK</button></div></div>
+</section>
+
+</main>
+<div id="modal-root"></div>
+<div id="toast" role="status" aria-live="polite"></div>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

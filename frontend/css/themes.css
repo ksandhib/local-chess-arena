@@ -1,0 +1,7 @@
+/* Board themes: change colours here. Selected theme is stored in localStorage. */
+body[data-theme="classic"] { --light:#F0D9B5; --dark:#B58863; --pw:#fdfdf8; --pws:#2a2118; --pb:#1c1a18; --pbs:#1c1a18; }
+body[data-theme="green"]   { --light:#EEEED2; --dark:#769656; --pw:#ffffff; --pws:#26301c; --pb:#1b1f16; --pbs:#1b1f16; }
+body[data-theme="blue"]    { --light:#DEE3E6; --dark:#8CA2AD; --pw:#ffffff; --pws:#1d2c36; --pb:#16222b; --pbs:#16222b; }
+body[data-theme="wood"]    { --light:#E3C28F; --dark:#9C6B3B; --pw:#fff8ea; --pws:#2b1a0a; --pb:#24150b; --pbs:#24150b;
+  --grain: repeating-linear-gradient(92deg, rgba(90,50,10,.07) 0 2px, rgba(255,255,255,.04) 2px 5px); }
+body[data-theme="dark"]    { --light:#6C7691; --dark:#38405A; --pw:#f4f6fb; --pws:#0f1320; --pb:#0d1019; --pbs:#9aa4c4; }

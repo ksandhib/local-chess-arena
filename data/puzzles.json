@@ -1,0 +1,127 @@
+[
+  {
+    "slug": "back-rank-mate",
+    "title": "Back-rank mate",
+    "description": "The enemy king is boxed in by its own pawns.",
+    "fen": "6k1/5ppp/8/8/8/8/5PPP/R5K1 w - - 0 1",
+    "goal": "mate",
+    "difficulty": "Easy",
+    "solution": [
+      "a1a8"
+    ]
+  },
+  {
+    "slug": "scholars-mate",
+    "title": "Scholar's mate",
+    "description": "Both White's queen and bishop aim at f7.",
+    "fen": "r1bqkb1r/pppp1ppp/2n2n2/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR w KQkq - 4 4",
+    "goal": "mate",
+    "difficulty": "Easy",
+    "solution": [
+      "h5f7"
+    ]
+  },
+  {
+    "slug": "fools-mate",
+    "title": "Fool's mate",
+    "description": "Black can end the game immediately.",
+    "fen": "rnbqkbnr/pppp1ppp/8/4p3/6P1/5P2/PPPPP2P/RNBQKBNR b KQkq - 0 2",
+    "goal": "mate",
+    "difficulty": "Easy",
+    "solution": [
+      "d8h4"
+    ]
+  },
+  {
+    "slug": "smothered-mate",
+    "title": "Smothered mate",
+    "description": "The king has no free squares; a knight can still check.",
+    "fen": "6rk/6pp/8/6N1/8/8/8/6K1 w - - 0 1",
+    "goal": "mate",
+    "difficulty": "Medium",
+    "solution": [
+      "g5f7"
+    ]
+  },
+  {
+    "slug": "queen-and-king",
+    "title": "Queen and king",
+    "description": "Bring the queen next to the king, protected by your king.",
+    "fen": "7k/5Q2/6K1/8/8/8/8/8 w - - 0 1",
+    "goal": "mate",
+    "difficulty": "Easy",
+    "solution": [
+      "f7f8"
+    ]
+  },
+  {
+    "slug": "rook-and-king",
+    "title": "Rook and king",
+    "description": "Use the king to cut off the escape squares.",
+    "fen": "k7/8/1K6/8/8/8/8/7R w - - 0 1",
+    "goal": "mate",
+    "difficulty": "Easy",
+    "solution": [
+      "h1h8"
+    ]
+  },
+  {
+    "slug": "legals-mate",
+    "title": "Legal's mate",
+    "description": "A knight move delivers mate after the bishop sacrifice.",
+    "fen": "rn1q1bnr/ppp1kB1p/3p2p1/4N3/4P3/2N5/PPPP1PPP/R1BbK2R w KQ - 1 7",
+    "goal": "mate",
+    "difficulty": "Medium",
+    "solution": [
+      "c3d5"
+    ]
+  },
+  {
+    "slug": "arabian-mate",
+    "title": "Arabian mate",
+    "description": "Rook and knight cooperate in the corner.",
+    "fen": "7k/R7/5N2/8/8/8/8/6K1 w - - 0 1",
+    "goal": "mate",
+    "difficulty": "Medium",
+    "solution": [
+      "a7h7"
+    ]
+  },
+  {
+    "slug": "rook-ladder",
+    "title": "Rook ladder",
+    "description": "Cut the king off one rank at a time.",
+    "fen": "7k/8/8/8/8/8/R7/1R4K1 w - - 0 1",
+    "goal": "mate",
+    "difficulty": "Medium",
+    "solution": [
+      "a2a7",
+      "h8g8",
+      "b1b8"
+    ]
+  },
+  {
+    "slug": "two-rooks-two-moves",
+    "title": "Two rooks, two moves",
+    "description": "Drive the king to the edge, then finish.",
+    "fen": "6k1/8/8/8/8/8/1R6/R5K1 w - - 0 1",
+    "goal": "mate",
+    "difficulty": "Medium",
+    "solution": [
+      "b2b7",
+      "g8f8",
+      "a1a8"
+    ]
+  },
+  {
+    "slug": "knight-fork",
+    "title": "Knight fork",
+    "description": "One knight move attacks both the king and a rook. Win the rook.",
+    "fen": "r3k3/8/8/3N4/8/8/8/4K3 w - - 0 1",
+    "goal": "tactic",
+    "difficulty": "Easy",
+    "solution": [
+      "d5c7"
+    ]
+  }
+]
